@@ -15,7 +15,7 @@ node* create() {
     printf("\nEnter number of nodes : ");
     scanf("%d",&n);
     node *head=NULL,*tail=NULL;
-    printf("\n Enter %d elements one by one :",n);
+    printf("\nEnter %d elements one by one :",n);
     for(int i=1;i<=n;i++) {
         node* newnode = (node*)malloc(sizeof(node));
         scanf("%d",&(newnode->val));
@@ -30,9 +30,13 @@ node* create() {
     }
     return head;
 }
-/*--------------------------------------*/
+/*--------------Display--------------------*/
 
-void display(node* head){
+void display(node *head){
+    if(head==NULL){
+        printf("\nEmpty list");
+        return;
+    }
     while(head!= NULL)
     {
         printf("  %d",head->val);
@@ -71,6 +75,140 @@ void insertAtK(node **head) {
     newnode->next = temp->next;
     temp->next = NULL;
     temp->next = newnode;
+}
+
+/*----Insert a node after the node (first from the start) containing a given value.------*/
+
+void insertAfterVal(node **head){
+    printf("\nAfter what val you want to insert : ");
+    int val ,flag =0;
+    scanf("%d",&val);
+    printf("\nEnter the element you want to insert :");
+    node *temp = *head, *newnode = (node*) malloc(sizeof(node));
+    scanf("%d",&(newnode->val));
+    newnode->next =NULL;
+    while(temp){
+        if(temp->val == val ) {
+            flag = 1;
+            break;
+        }
+        temp = temp->next;
+    }
+    if(flag){
+        newnode->next = temp->next;
+        temp->next = newnode;
+    }
+    else {
+        printf("\n%d is not present in the list.",val);
+    }
+}
+/*------------Delete first node-------------------*/
+
+void delHead(node **head){
+    node *temp = *head ;
+
+    if(!temp) printf("\nlist is empty");
+    *head = temp->next;
+    temp->next = NULL;
+    free(temp);
+}
+/*---------------Delete last node---------------*/
+void delTail(node **head){
+    node *temp = *head;
+    if(!(*head)->next){
+        free(*head);
+        *head=NULL;
+        return;
+    }
+    while(temp->next->next) {
+        temp = temp->next;
+    }
+    free(temp->next->next);
+    temp->next = NULL;
+    printf("\nLast element deleted");
+}
+
+/*---------------Delete after kth node--------------*/
+void delKth(node **head){
+    printf("\nEnter the position : ");
+    node *curr= *head,*prev=NULL;
+    int pos;
+    scanf("%d",&pos);
+    if(pos==1){
+        delHead(head);
+        return;
+    }
+    for(int i =1 ;i<pos;i++) {
+        if(!curr){
+            printf("\nInvalid position ,try another.");
+            return;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    if(!(*head)->next){
+        free(*head);
+        *head=NULL;
+        return;
+    }
+    prev->next = curr->next;
+    curr->next= NULL;
+    free(curr);
+}
+/*---------------Delete before kth node--------------*/
+void delBeforeKth(node **head){
+    printf("\nEnter the position : ");
+    node *curr= *head,*prev=NULL;
+    int pos;
+    scanf("%d",&pos);
+    if(pos<2){
+        printf("\n there is no element before this position.");
+        return;
+    }
+    for(int i =1 ;i<pos-1&& curr != NULL;i++) {
+        if(!curr){
+            printf("\nInvalid position ,try another.");
+            return;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    if(!(*head)->next){
+        free(*head);
+        *head=NULL;
+        return;
+    }
+    prev->next = curr->next;
+    curr->next= NULL;
+    free(curr);
+}
+
+/*---------------Delete kth node--------------*/
+void delAfterKth(node **head){
+    printf("\nEnter the position : ");
+    node *curr= (*head)->next,*prev=*head;
+    int pos;
+    scanf("%d",&pos);
+    if(pos<1){
+        printf("\nPosition starts from 1.");
+        return;
+    }
+    for(int i =1 ;i<pos;i++) {
+        if(curr->next==NULL){
+            printf("\nInvalid position ,try another.");
+            return;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    if(!(*head)->next){
+        free(*head);
+        *head=NULL;
+        return;
+    }
+    prev->next = curr->next;
+    curr->next= NULL;
+    free(curr);
 }
 /*--------------------Sort---------------------*/
 void sort(node **head) {
@@ -130,11 +268,15 @@ node* merge(node *first , node *second) {
 int main()
 {
     node *head= create();
-    node *second = create();
+    // node *second = create();
     
     display(head);
-    display(second);
+    // display(second);
     // sort(&head);
-    display(merge(head,second));
+    // display(merge(head,second));
+    
+    // insertAfterVal(&head);
+    delAfterKth(&head);
+    display(head);
     return 0;
 }
