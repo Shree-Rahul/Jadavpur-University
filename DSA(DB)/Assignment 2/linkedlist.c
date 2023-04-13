@@ -227,7 +227,28 @@ void sort(node **head) {
         curr = curr->next;
     }
 }
-
+/*------------------Search----------------------*/
+void search(node *head){
+    printf("\nEnter the element you want to search : ");
+    int val ,flag =0,pos=1;
+    scanf("%d",&val);
+    node *temp = head;
+        while(temp){
+            
+            if(temp->val == val ) {
+                flag = 1;
+                break;
+            }
+            temp = temp->next;
+            pos++;
+    }
+    if(flag){
+        printf("\n%d is found at %d position.",val,pos);
+    }
+    else {
+        printf("\n%d is not present in the list.",val);
+    }
+}
 /*----------------Merge two sorted arrays----------------*/
 void insert (node **head,int val){
 
@@ -274,9 +295,9 @@ int main()
     // display(second);
     // sort(&head);
     // display(merge(head,second));
-    
+    search(head);
     // insertAfterVal(&head);
-    delAfterKth(&head);
-    display(head);
+    // delAfterKth(&head);
+    // display(head);
     return 0;
 }
