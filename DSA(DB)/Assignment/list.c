@@ -141,7 +141,7 @@ void fIndex(int *arr,int *size){
 	scanf("%d",&ele);
 	for(i=0;i<(*size);i++) {
 		if(*(arr+i)==ele) {
-			printf("\n\n[Element %d found at index %d]\n",ele,i);
+			printf("\n\n[Element %d found at index %d]\n",ele,i+1);
 			flag=0;
 		}
 	}
@@ -161,7 +161,7 @@ void delete(int *arr,int *size) {
 	scanf("%d",&id);
 	if(id>=(*size) || id<0) printf("\n\n[Inavlid index]\n");
 	else {
-		int i=id;
+		int i=id-1;
 		while(i != (*size)-1) {
 			*(arr+i)=*(arr+i+1);
 			i++;
