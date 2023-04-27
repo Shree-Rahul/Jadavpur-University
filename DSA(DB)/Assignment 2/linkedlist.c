@@ -30,6 +30,18 @@ node* create() {
     }
     return head;
 }
+void insert (node **head,int val){
+
+    node  *tail=*head,*newnode  = (node*)malloc(sizeof(node));
+    newnode->val = val;
+    newnode->next = NULL;
+        if(*head == NULL){
+            *head = newnode;
+        } else {
+            while(tail->next) tail =tail->next;
+            tail->next = newnode;
+        }
+}
 /*--------------Display--------------------*/
 
 void display(node *head){
@@ -111,6 +123,7 @@ void delHead(node **head){
     *head = temp->next;
     temp->next = NULL;
     free(temp);
+    printf("\nHead deleted succesfully.");
 }
 /*---------------Delete last node---------------*/
 void delTail(node **head){
@@ -149,11 +162,14 @@ void delKth(node **head){
     if(!(*head)->next){
         free(*head);
         *head=NULL;
+        printf("\nElement deleted succesfully.");
         return;
     }
     prev->next = curr->next;
     curr->next= NULL;
     free(curr);
+    printf("\nElement deleted succesfully.");
+
 }
 /*---------------Delete before kth node--------------*/
 void delBeforeKth(node **head){
@@ -176,11 +192,14 @@ void delBeforeKth(node **head){
     if(!(*head)->next){
         free(*head);
         *head=NULL;
+        printf("\nElement deleted succesfully.");
         return;
     }
     prev->next = curr->next;
     curr->next= NULL;
     free(curr);
+    printf("\nElement deleted succesfully.");
+
 }
 
 /*---------------Delete kth node--------------*/
@@ -204,11 +223,46 @@ void delAfterKth(node **head){
     if(!(*head)->next){
         free(*head);
         *head=NULL;
+        printf("\nElement deleted succesfully.");
+
         return;
     }
     prev->next = curr->next;
     curr->next= NULL;
     free(curr);
+    printf("\nElement deleted succesfully.");
+}
+
+/*---------------------Delete  after specified node -----------*/
+
+void delAfterSpecified(node **head){
+    printf("\nAfter what val you want to delete: ");
+    int val ,flag =0;
+    scanf("%d",&val);
+    
+    node *temp = *head,*prev = NULL;
+    while(temp){
+        prev=temp->next;
+        if(temp->val == val ) {
+            flag = 1;
+            break;
+        }
+        
+        temp = temp->next;
+    }
+    if(flag && prev){
+        temp->next = prev->next;
+        prev->next = NULL;
+        free(prev);
+        printf("\nElement deleted succesfully.");
+    }
+    else {
+        if(flag){
+            printf("\nThere is n element after given val.");
+            return;
+        }
+        printf("\n%d is not present in the list.",val);
+    }
 }
 /*--------------------Sort---------------------*/
 void sort(node **head) {
@@ -249,19 +303,20 @@ void search(node *head){
         printf("\n%d is not present in the list.",val);
     }
 }
-/*----------------Merge two sorted arrays----------------*/
-void insert (node **head,int val){
 
-    node  *tail=*head,*newnode  = (node*)malloc(sizeof(node));
-    newnode->val = val;
-    newnode->next = NULL;
-        if(*head == NULL){
-            *head = newnode;
-        } else {
-            while(tail->next) tail =tail->next;
-            tail->next = newnode;
-        }
+/*----------------------Reverse--------------------*/
+
+node* reverse(node *head ,node **rev){
+    node *temp=head;
+
+    if(!temp) return *rev;
+
+    reverse(temp->next,rev);
+    insert(rev, temp->val);
+    return *rev;
 }
+
+/*----------------------Merge--------------------------*/
 node* merge(node *first , node *second) {
 
     node *result = NULL, *temp_f= first , *temp_s = second ,*tail=NULL;
@@ -286,18 +341,53 @@ node* merge(node *first , node *second) {
     }
     return result;
 }
+/*------------------Concatinate two lists-----------------------*/
+node* concat(node *first ,node *second){
+    
+    node *result=NULL;
+    while(first){
+        insert(&result,first->val);
+        first = first->next;
+    }
+    while(second){
+        insert(&result,second->val);
+        second = second->next;
+    }
+    return result;
+
+}
+/*--------------cheak equal-------------------*/
+int checkEqual(node **first,node **second){
+    sort(first);
+    sort(second);
+    node *temp_f=*first , *temp_s = *second;
+    while(temp_f && temp_s){
+        if(!(temp_f->val == temp_s->val)) return 0;
+        temp_f = temp_f->next;
+        temp_s=temp_s->next;
+    }
+    if(temp_f) return 0;
+    if(temp_s) return 0;
+
+    return 1 ;
+}
 int main()
 {
     node *head= create();
+    node *second = create();
     // node *second = create();
     
     display(head);
     // display(second);
     // sort(&head);
     // display(merge(head,second));
-    search(head);
+    // search(head);
     // insertAfterVal(&head);
     // delAfterKth(&head);
-    // display(head);
+    // display(concat(head,head));
+    // delAfterSpecified(&head);
+    display(second);
+    if(checkEqual(&head,&second)) printf("\nThey are equal.");
+    else printf("\nThey are not the same brooo.");
     return 0;
 }
