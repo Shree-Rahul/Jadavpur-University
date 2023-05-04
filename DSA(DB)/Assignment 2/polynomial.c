@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#define NEWLINE printf("\n");
 typedef struct node{
     int coefficient;
     int exponent;
@@ -27,11 +28,12 @@ Node* create(){
     printf("\nHow many variables are there in the polynomial:");
     int num;
     scanf("%d",&num);
+    int i = num;
     while(num--){
         int coef,exp;
-        printf("\nEnter the co-efficient of %d variable: ",num+1);
+        printf("\nEnter the co-efficient of %d variable: ",i-num);
         scanf("%d",&(coef));
-        printf("\nEnter the power of %d variable: ",num+1);
+        printf("\nEnter the power of %d variable: ",i-num);
         scanf("%d",&exp);
         insert(&head,coef,exp);
     }
@@ -46,6 +48,12 @@ void display(Node *head){
         return;
     }
     while(temp){
+        if(temp->coefficient == 0){
+            printf("%d",temp->coefficient);
+            if(temp->next != NULL) printf(" + ");
+            temp=temp->next;
+            continue;
+        }
         if(temp->exponent==0){
             printf("%d",temp->coefficient);
         }
@@ -113,7 +121,24 @@ Node* subPolynomials(Node* p1, Node* p2) {
         insert(&result, p2->coefficient, p2->exponent);
         p2 = p2->next;
     }
+}
 
+Node* mulPolynomials(Node *p1,Node *p2){
+    Node *result = NULL;
+
+    // if(p1->coefficient == 0 || p2->coefficient==0){}
+    while (p1 != NULL)
+    {
+        Node *curr2 = p2;
+        while(curr2){
+            int coef = p1->coefficient * curr2->coefficient;
+            int exp = p1->exponent + curr2->exponent;
+            insert(&result,coef,exp);
+            curr2 = curr2->next;
+        }
+        p1 = p1->next;
+    }
+    
     return result;
 }
 int main()
@@ -123,7 +148,7 @@ int main()
     display(first);
     display(second);
 
-    Node *result = subPolynomials(first,second);
+    Node *result = mulPolynomials(first,second);
     display(result);
 
     return 0;
