@@ -6,8 +6,8 @@ public class prog1{
         private double currentLoanAmount;
         private String phoneNumber;
         private boolean privileged;
-        private static double creditLimit = 10000; // Default credit limit for regular customers
-        private static double privilegedCreditLimit = 20000; // Credit limit for privileged customers
+        private static final double creditLimit = 10000; 
+        private static final double privilegedCreditLimit = 20000; 
     
         public Customer(int customerId, String name, double currentLoanAmount, String phoneNumber, boolean privileged) {
             this.customerId = customerId;
