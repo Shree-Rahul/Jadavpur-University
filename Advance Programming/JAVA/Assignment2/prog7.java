@@ -6,16 +6,16 @@ iii) whether it starts with "The" or not
 iv) put the String into an array of characters
 v) display the tokens in the String (tokens are the substrings separated by space or @ or.) 
 */
-
-class manStr {
+import java.util.Scanner;
+class manStr{
     private String str;
     private String tokens[];
     private char[]characters;
     
-    public manStr(String str){
+    public manStr(String str,String splitter){
         this.str = str;
         String tempStr = this.str.toLowerCase();
-        this.tokens = tempStr.split(" ");
+        this.tokens = tempStr.split(splitter);
     }
     void setStr(String str){
         this.str = str;
@@ -67,9 +67,9 @@ class manStr {
         return count;
     }
     boolean stWithThe(){
-        if(tokens[0]=="the") 
-            return true;
-        return false;
+        if(!tokens[0].equals("the"))
+            return false;
+        return true;
     }
     void showArrayOfChar(){
         System.out.println("Char Array of the given input :");
@@ -82,16 +82,27 @@ class manStr {
 }
 class prog7 {
     public static void main(String[] args) {
-        manStr S1 = new manStr("The story and this how it begand and this is how it continues");
+        Scanner input = new Scanner(System.in);
+        String string ,splitter;
+
+
+        System.out.println("Enter the input string : ");
+        string = input.nextLine();
+        System.out.println("Mention the Splitter :");
+        splitter = input.nextLine();
+
+
+        manStr S1 = new manStr(string , splitter);
         S1.show();
         System.out.println("Number of A's in the input string is : "+S1.aCount());
         System.out.println("Number of 'and's found in the input string is: " + S1.andCount());
-        System.out.print("Checking stsrts with the or not : ");
+        System.out.print("Checking starts with the or not : ");
         if(S1.stWithThe())
-            System.out.print("Yes");
+            System.out.println("Yes");
         else
             System.out.println("No");
         S1.showArrayOfChar();
         S1.showTokens();
+        input.close();
     }
 }
